@@ -7,7 +7,7 @@ namespace CoreSchool.Entities
         string name;
         public string Name
         {
-            get { return "Copia: " + name; }
+            get { return name; }
             set { name = value.ToUpper(); }
         }
 
@@ -30,7 +30,15 @@ namespace CoreSchool.Entities
             set { city = value; }
         }
 
-        public TypesSchool TypeSchool { get; set; }
+        TypesSchool typesSchool;
+        public TypesSchool TypesSchool { get; set; }
+
+        private Courses[] courses;
+        public Courses[] Courses
+        {
+            get { return courses; }
+            set { courses = value; }
+        }
 
         public School(string name, int foundationAge) => (this.name, this.foundationAge) = (name, foundationAge);
 
@@ -48,7 +56,7 @@ namespace CoreSchool.Entities
 
         public override string ToString()
         {
-            return $"Nombre: \"{Name}\", Tipo: \"{TypeSchool}\"{System.Environment.NewLine}País: \"{Country}\", Ciudad: \"{City}\"";
+            return $"Nombre: \"{Name}\", Tipo: \"{TypesSchool}\"{System.Environment.NewLine}País: \"{Country}\", Ciudad: \"{City}\"";
         }
     }
 }
