@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace CoreSchool.Entities
 {
@@ -33,8 +34,8 @@ namespace CoreSchool.Entities
         TypesSchool typesSchool;
         public TypesSchool TypesSchool { get; set; }
 
-        private Courses[] courses;
-        public Courses[] Courses
+        private List<Courses> courses;
+        public List<Courses> Courses
         {
             get { return courses; }
             set { courses = value; }

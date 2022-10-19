@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreSchool.Entities;
 using static System.Console;
 
@@ -10,12 +11,33 @@ namespace StageOne
         {
             var School = new School("Juan's School", 2022, TypesSchool.Primaria,
                                     country: "Ecuador", city: "Quito");
-            School.Courses = new Courses[] {
-                new Courses() { Name = "101" },
-                new Courses() { Name = "201" },
-                new Courses() { Name = "301" },
+            School.Courses = new List<Courses>(){
+                new Courses() { Name = "101", WorkingDay = TypesWorkingDay.Mañana },
+                new Courses() { Name = "201", WorkingDay = TypesWorkingDay.Mañana },
+                new Courses() { Name = "301", WorkingDay = TypesWorkingDay.Mañana },
             };
+            School.Courses.Add(new Courses { Name = "102", WorkingDay = TypesWorkingDay.Tarde });
+            School.Courses.Add(new Courses { Name = "202", WorkingDay = TypesWorkingDay.Tarde });
+            var otherCollectionCourse = new List<Courses>(){
+                new Courses() { Name = "401", WorkingDay = TypesWorkingDay.Mañana },
+                new Courses() { Name = "501", WorkingDay = TypesWorkingDay.Mañana },
+                new Courses() { Name = "501", WorkingDay = TypesWorkingDay.Tarde },
+            };
+            School.Courses.AddRange(otherCollectionCourse);
             PrintCoursesSchool(School);
+            School.Courses.RemoveAll(delegate (Courses cou)
+                {
+                    return cou.Name == "301";
+                });
+            School.Courses.RemoveAll(cou => cou.Name == "501" && cou.WorkingDay == TypesWorkingDay.Mañana);
+
+            WriteLine();
+            PrintCoursesSchool(School);
+        }
+
+        private static bool RemoveCollection(Courses couObj)
+        {
+            return couObj.Name == "301";
         }
 
         private static void PrintCoursesSchool(School School)
