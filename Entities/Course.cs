@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoreSchool.Entities
 {
-    public class Courses
+    public class Course
     {
         private string uniqueId;
         public string UniqueId { get; private set; }
@@ -24,6 +22,20 @@ namespace CoreSchool.Entities
             set { workingDay = value; }
         }
 
-        public Courses() => UniqueId = Guid.NewGuid().ToString();
+        private List<Subject> subjects;
+        public List<Subject> Subjects
+        {
+            get { return subjects; }
+            set { subjects = value; }
+        }
+
+        private List<Student> students;
+        public List<Student> Students
+        {
+            get { return students; }
+            set { students = value; }
+        }
+
+        public Course() => UniqueId = Guid.NewGuid().ToString();
     }
 }

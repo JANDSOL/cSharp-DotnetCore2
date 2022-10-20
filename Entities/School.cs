@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace CoreSchool.Entities
 {
-    class School
+    public class School
     {
+        public string UniqueId { get; private set; } = Guid.NewGuid().ToString();
         string name;
         public string Name
         {
@@ -34,8 +35,8 @@ namespace CoreSchool.Entities
         TypesSchool typesSchool;
         public TypesSchool TypesSchool { get; set; }
 
-        private List<Courses> courses;
-        public List<Courses> Courses
+        private List<Course> courses;
+        public List<Course> Courses
         {
             get { return courses; }
             set { courses = value; }
