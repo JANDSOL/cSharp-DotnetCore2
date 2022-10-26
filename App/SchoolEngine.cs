@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CoreSchool.Entities;
+using CoreSchool.Util;
 
 namespace CoreSchool.App
 {
@@ -22,23 +23,183 @@ namespace CoreSchool.App
 
         }
 
-        public List<BaseSchoolObject> GetSchoolObjects()
+        public void PrintDictionary(
+            Dictionary<KeyDictionary, IEnumerable<BaseSchoolObject>> dic,
+            bool printStuTes = false
+        )
         {
-            var listObj = new List<BaseSchoolObject>();
-            listObj.Add(School);
-            listObj.AddRange(School.Courses);
+            foreach (var objDict in dic)
+            {
+                Printer.WriteTitle(objDict.Key.ToString());
+                foreach (var value in objDict.Value)
+                {
+                    switch (objDict.Key)
+                    {
+                        case KeyDictionary.Evaluación:
+                            if (printStuTes)
+                                Console.WriteLine(value);
+                            break;
+                        case KeyDictionary.Escuela:
+                            Console.WriteLine(value);
+                            break;
+                        case KeyDictionary.Alumno:
+                            Console.WriteLine($"{KeyDictionary.Alumno}: {value.Name}");
+                            break;
+                        case KeyDictionary.Curso:
+                            var temporalCourse = value as Course;
+                            if (temporalCourse != null)
+                            {
+                                int studentsCount = temporalCourse.Students.Count;
+                                Console.WriteLine(
+                                    $"{KeyDictionary.Curso}: {value.Name}, Cantidad Alumnos: {studentsCount}"
+                                );
+                            }
+                            break;
+                        default:
+                            Console.WriteLine(value);
+                            break;
+                    }
+                }
+            }
+        }
+
+        public Dictionary<KeyDictionary, IEnumerable<BaseSchoolObject>> GetDictionaryObjects()
+        {
+            var myDictionary = new Dictionary<KeyDictionary, IEnumerable<BaseSchoolObject>>();
+
+            myDictionary.Add(KeyDictionary.Escuela, new[] { School });
+            myDictionary.Add(KeyDictionary.Curso, School.Courses);
+
+            var temporalStudentTest = new List<StudentTest>();
+            var temporalSubject = new List<Subject>();
+            var temporalStudent = new List<Student>();
             foreach (var course in School.Courses)
             {
-                listObj.AddRange(course.Subjects);
-                listObj.AddRange(course.Students);
+                temporalSubject.AddRange(course.Subjects);
+                temporalStudent.AddRange(course.Students);
 
                 foreach (var student in course.Students)
                 {
-                    listObj.AddRange(student.StudentTest);
+                    temporalStudentTest.AddRange(student.StudentTest);
+                }
+            }
+            myDictionary.Add(KeyDictionary.Asignatura, temporalSubject);
+            myDictionary.Add(KeyDictionary.Alumno, temporalStudent);
+            myDictionary.Add(KeyDictionary.Evaluación, temporalStudentTest);
+
+            return myDictionary;
+        }
+
+        public IReadOnlyList<BaseSchoolObject> GetSchoolObjects(
+            bool bringStudentTests = true,
+            bool bringStudents = true,
+            bool bringSubjects = true,
+            bool bringCourses = true
+        )
+        {
+            return GetSchoolObjects(
+                out int dummy,
+                out dummy,
+                out dummy,
+                out dummy
+            );
+        }
+
+        public IReadOnlyList<BaseSchoolObject> GetSchoolObjects(
+            out int countStudentTests,
+            bool bringStudentTests = true,
+            bool bringStudents = true,
+            bool bringSubjects = true,
+            bool bringCourses = true
+        )
+        {
+            return GetSchoolObjects(
+                out countStudentTests,
+                out int dummy,
+                out dummy,
+                out dummy
+            );
+        }
+
+        public IReadOnlyList<BaseSchoolObject> GetSchoolObjects(
+            out int countStudentTests,
+            out int countStudents,
+            bool bringStudentTests = true,
+            bool bringStudents = true,
+            bool bringSubjects = true,
+            bool bringCourses = true
+        )
+        {
+            return GetSchoolObjects(
+                out countStudentTests,
+                out countStudents,
+                out int dummy,
+                out dummy
+            );
+        }
+
+        public IReadOnlyList<BaseSchoolObject> GetSchoolObjects(
+            out int countStudentTests,
+            out int countStudents,
+            out int countSubjects,
+            bool bringStudentTests = true,
+            bool bringStudents = true,
+            bool bringSubjects = true,
+            bool bringCourses = true
+        )
+        {
+            return GetSchoolObjects(
+                out countStudentTests,
+                out countStudents,
+                out countSubjects,
+                out int dummy
+            );
+        }
+
+        public IReadOnlyList<BaseSchoolObject> GetSchoolObjects(
+            out int countStudentTests,
+            out int countStudents,
+            out int countSubjects,
+            out int countCourses,
+            bool bringStudentTests = true,
+            bool bringStudents = true,
+            bool bringSubjects = true,
+            bool bringCourses = true
+        )
+        {
+            countStudentTests = countStudents = countSubjects = 0;
+            var listObj = new List<BaseSchoolObject>();
+            listObj.Add(School);
+            if (bringCourses)
+            {
+                listObj.AddRange(School.Courses);
+            }
+            countCourses = School.Courses.Count;
+            foreach (var course in School.Courses)
+            {
+                countSubjects += course.Subjects.Count;
+                countCourses += course.Students.Count;
+
+                if (bringSubjects)
+                {
+                    listObj.AddRange(course.Subjects);
+                }
+                if (bringStudents)
+                {
+                    listObj.AddRange(course.Students);
+                }
+
+                if (bringStudentTests)
+                {
+                    foreach (var student in course.Students)
+                    {
+                        listObj.AddRange(student.StudentTest);
+                        countStudentTests += student.StudentTest.Count;
+                    }
                 }
             }
 
-            return listObj;
+            return listObj.AsReadOnly();
         }
 
         private List<Student> GenerateRandomStudents(int numberStudents)
@@ -59,13 +220,13 @@ namespace CoreSchool.App
 
         private void LoadStudentTests(int numberStudentTests)
         {
+            var rnd = new Random();
             foreach (var course in School.Courses)
             {
                 foreach (var subject in course.Subjects)
                 {
                     foreach (var student in course.Students)
                     {
-                        var rnd = new Random(Environment.TickCount);
 
                         for (int i = 0; i < numberStudentTests; i++)
                         {
@@ -73,7 +234,7 @@ namespace CoreSchool.App
                             {
                                 Subject = subject,
                                 Name = $"{subject.Name} Ev#{i + 1}",
-                                Grade = (float)(5 * rnd.NextDouble()),
+                                Grade = MathF.Round(10 * (float)rnd.NextDouble(), 2),
                                 Student = student
                             };
                             student.StudentTest.Add(stuTes);
