@@ -5,7 +5,7 @@ using CoreSchool.Entities;
 
 namespace CoreSchool.App
 {
-    public class SchoolEngine
+    public sealed class SchoolEngine
     {
         public School School { get; set; }
 
@@ -19,6 +19,7 @@ namespace CoreSchool.App
             LoadSubjects();
             GenerateRandomStudents(50);
             LoadStudentTests(5);
+
         }
 
         private void LoadStudentTests(int numberStudentTests)
@@ -45,6 +46,25 @@ namespace CoreSchool.App
                     }
                 }
             }
+        }
+
+        public List<BaseSchoolObject> GetSchoolObjects()
+        {
+            var listObj = new List<BaseSchoolObject>();
+            listObj.Add(School);
+            listObj.AddRange(School.Courses);
+            foreach (var course in School.Courses)
+            {
+                listObj.AddRange(course.Subjects);
+                listObj.AddRange(course.Students);
+
+                foreach (var student in course.Students)
+                {
+                    listObj.AddRange(student.StudentTest);
+                }
+            }
+
+            return listObj;
         }
 
         private List<Student> GenerateRandomStudents(int numberStudents)

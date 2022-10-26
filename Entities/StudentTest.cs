@@ -2,39 +2,15 @@ using System;
 
 namespace CoreSchool.Entities
 {
-    public class StudentTest
+    public class StudentTest : BaseSchoolObject
     {
-        private string uniqueId;
-        public string UniqueId { get; private set; }
+        public Student Student { get; set; }
+        public Subject Subject { get; set; }
+        public float Grade { get; set; }
 
-        string name;
-        public string Name
+        public override string ToString()
         {
-            get { return name; }
-            set { name = value; }
+            return $"{Grade}, {Student.Name}, {Subject.Name}";
         }
-
-        private Student student;
-        public Student Student
-        {
-            get { return student; }
-            set { student = value; }
-        }
-
-        private Subject subject;
-        public Subject Subject
-        {
-            get { return subject; }
-            set { subject = value; }
-        }
-
-        private float grade;
-        public float Grade
-        {
-            get { return grade; }
-            set { grade = value; }
-        }
-
-        public StudentTest() => UniqueId = Guid.NewGuid().ToString();
     }
 }

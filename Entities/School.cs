@@ -3,57 +3,26 @@ using System.Collections.Generic;
 
 namespace CoreSchool.Entities
 {
-    public class School
+    public class School : BaseSchoolObject
     {
-        public string UniqueId { get; private set; } = Guid.NewGuid().ToString();
-        string name;
-        public string Name
-        {
-            get { return name; }
-            set { name = value.ToUpper(); }
-        }
-
-        int foundationAge;
-        public int FoundationAge
-        {
-            get { return foundationAge; }
-            set { foundationAge = value; }
-        }
-
-        string country;
-        public string Country {
-            get { return country; }
-            set { country = value; }
-        }
-
-        string city;
-        public string City {
-            get { return city; }
-            set { city = value; }
-        }
-
-        TypesSchool typesSchool;
+        public int FoundationAge { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
         public TypesSchool TypesSchool { get; set; }
+        public List<Course> Courses { get; set; }
 
-        private List<Course> courses;
-        public List<Course> Courses
-        {
-            get { return courses; }
-            set { courses = value; }
-        }
-
-        public School(string name, int foundationAge) => (this.name, this.foundationAge) = (name, foundationAge);
+        public School(string name, int foundationAge) => (Name, FoundationAge) = (name, foundationAge);
 
         public School(
             string name,
             int foundationAge,
             TypesSchool typesSchool,
-            string country="",
-            string city="")
+            string country = "",
+            string city = "")
         {
-            (this.name, this.foundationAge) = (name, foundationAge);
-            this.country = country;
-            this.city = city;
+            (Name, FoundationAge) = (name, foundationAge);
+            this.Country = country;
+            this.City = city;
         }
 
         public override string ToString()
