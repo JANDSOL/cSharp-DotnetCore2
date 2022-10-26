@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using CoreSchool.Util;
 
 namespace CoreSchool.Entities
 {
-    public class School : BaseSchoolObject
+    public class School : BaseSchoolObject, IntAddress
     {
         public int FoundationAge { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
+        public string Address { get; set; }
         public TypesSchool TypesSchool { get; set; }
         public List<Course> Courses { get; set; }
 
@@ -23,6 +25,17 @@ namespace CoreSchool.Entities
             (Name, FoundationAge) = (name, foundationAge);
             this.Country = country;
             this.City = city;
+        }
+
+        public void ClearSpace()
+        {
+            Printer.DrawLine();
+            Console.WriteLine("Limpiando Escuela...");
+            foreach (var course in Courses)
+            {
+                course.ClearSpace();
+            }
+            Printer.WriteTitle($"Escuela {Name} Limpio...");
         }
 
         public override string ToString()

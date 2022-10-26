@@ -1,5 +1,3 @@
-using System;
-
 namespace CoreSchool.Entities
 {
     public class StudentTest : BaseSchoolObject

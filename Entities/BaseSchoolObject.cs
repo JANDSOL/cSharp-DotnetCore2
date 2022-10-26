@@ -2,7 +2,7 @@ using System;
 
 namespace CoreSchool.Entities
 {
-    public class BaseSchoolObject
+    public abstract class BaseSchoolObject
     {
         public string UniqueId { get; private set; }
 

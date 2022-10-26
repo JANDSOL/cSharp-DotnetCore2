@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using CoreSchool.App;
+﻿using CoreSchool.App;
 using CoreSchool.Entities;
 using CoreSchool.Util;
 using static System.Console;
+using System.Linq;
 
 namespace CoreSchool
 {
@@ -19,6 +18,12 @@ namespace CoreSchool
 
             PrintCoursesSchool(engine.School);
             var listObjects = engine.GetSchoolObjects();
+
+            var listIntAddress = from obj in listObjects
+                                 where obj is Student
+                                 select (Student)obj;
+
+            // engine.School.ClearSpace();
         }
 
         private static void PrintCoursesSchool(School school)

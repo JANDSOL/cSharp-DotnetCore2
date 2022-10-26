@@ -22,32 +22,6 @@ namespace CoreSchool.App
 
         }
 
-        private void LoadStudentTests(int numberStudentTests)
-        {
-            foreach (var course in School.Courses)
-            {
-                foreach (var subject in course.Subjects)
-                {
-                    foreach (var student in course.Students)
-                    {
-                        var rnd = new Random(Environment.TickCount);
-
-                        for (int i = 0; i < numberStudentTests; i++)
-                        {
-                            var stuTes = new StudentTest
-                            {
-                                Subject = subject,
-                                Name = $"{subject.Name} Ev#{i + 1}",
-                                Grade = (float)(5 * rnd.NextDouble()),
-                                Student = student
-                            };
-                            student.StudentTest.Add(stuTes);
-                        }
-                    }
-                }
-            }
-        }
-
         public List<BaseSchoolObject> GetSchoolObjects()
         {
             var listObj = new List<BaseSchoolObject>();
@@ -81,6 +55,34 @@ namespace CoreSchool.App
             return listStudents.OrderBy(st => st.UniqueId).Take(numberStudents).ToList();
         }
 
+        #region Charging Methods (LoadStudentTests, LoadSubjects and LoadCourses)
+
+        private void LoadStudentTests(int numberStudentTests)
+        {
+            foreach (var course in School.Courses)
+            {
+                foreach (var subject in course.Subjects)
+                {
+                    foreach (var student in course.Students)
+                    {
+                        var rnd = new Random(Environment.TickCount);
+
+                        for (int i = 0; i < numberStudentTests; i++)
+                        {
+                            var stuTes = new StudentTest
+                            {
+                                Subject = subject,
+                                Name = $"{subject.Name} Ev#{i + 1}",
+                                Grade = (float)(5 * rnd.NextDouble()),
+                                Student = student
+                            };
+                            student.StudentTest.Add(stuTes);
+                        }
+                    }
+                }
+            }
+        }
+
         private void LoadSubjects()
         {
             foreach (var course in School.Courses)
@@ -111,5 +113,6 @@ namespace CoreSchool.App
                 new Course() { Name = "501", WorkingDay = TypesWorkingDay.Tarde },
             };
         }
+        #endregion
     }
 }
