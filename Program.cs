@@ -24,7 +24,60 @@ namespace CoreSchool
             var studentTestDicBySubject = reporter.GetStudentTestDicBySubject();
             var studentAverageBySubject = reporter.GetStudentAverageBySubject();
             var bestAverageBySubjects = reporter.GetBestAverageBySubjects(7.5f);
-            printBestAverages(bestAverageBySubjects);
+
+            Printer.WriteTitle("¡Captura de evaluación por consola!");
+            var newStudentTest = new StudentTest();
+            string nameStuTes, gradeStuTesString;
+            float gradeStuTes;
+
+            Printer.PressEnter();
+            Write("Ingrese el nombre de la evaluación: ");
+            nameStuTes = ReadLine();
+            try
+            {
+                newStudentTest.Name = nameStuTes.ToLower();
+                if (string.IsNullOrWhiteSpace(nameStuTes))
+                {
+                    throw new ArgumentNullException("¡El valor del nombre no puede estar vacío!");
+                }
+                else
+                {
+                    WriteLine("El nombre de la evaluación fue ingresado correctamente.");
+                }
+            }
+            catch (ArgumentNullException argNull)
+            {
+                WriteLine(argNull.ParamName);
+                WriteLine("Saliendo del programa...");
+                return;
+            }
+
+            Printer.PressEnter();
+            Write($"Ingrese la calificación para \"{newStudentTest.Name}\": ");
+            gradeStuTesString = ReadLine();
+            try
+            {
+                gradeStuTes = float.Parse(gradeStuTesString);
+                newStudentTest.Grade = gradeStuTes;
+                if (gradeStuTes >= 0 && gradeStuTes <= 10)
+                {
+                    WriteLine($"La calificación de \"{newStudentTest.Name}\" se ingreso correctamente.");
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("¡La calificación debe estar en un rango del 0 al 10!");
+                }
+            }
+            catch (ArgumentOutOfRangeException argOut)
+            {
+                WriteLine(argOut.ParamName);
+                return;
+            }
+            catch (Exception)
+            {
+                WriteLine("¡El valor para la calificación no puede estar vacío!");
+                return;
+            }
         }
 
         private static void printBestAverages(List<BestAverageBySubject> bestAverageBySubjects)

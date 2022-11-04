@@ -7,6 +7,13 @@ namespace CoreSchool.Util
         {
             WriteLine("".PadLeft(size, '='));
         }
+
+        public static void PressEnter()
+        {
+            WriteLine();
+            WriteLine("Presione Enter <-- para continuar...");
+        }
+
         public static void WriteTitle(string title)
         {
             const int EXTRA_SPACE = 4;
