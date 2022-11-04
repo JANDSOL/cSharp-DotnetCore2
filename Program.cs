@@ -18,17 +18,30 @@ namespace CoreSchool
             Printer.WriteTitle("BIENVENIDOS A LA ESCUELA");
             WriteLine();
 
-            // Dictionary<int, string> myDictionary = new Dictionary<int, string>();
-            // myDictionary.Add(10, "JuanK");
-            // myDictionary.Add(23, "Lorem Ipsum");
-            // foreach (var keyValPair in myDictionary)
-            // {
-            //     WriteLine($"Key: {keyValPair.Key}, Valor: {keyValPair.Value}");
-            // }
+            var reporter = new Reporter(engine.GetDictionaryObjects());
+            var stuTesList = reporter.GetStudentTestsList();
+            var sbjList = reporter.GetSubjectsList();
+            var studentTestDicBySubject = reporter.GetStudentTestDicBySubject();
+            var studentAverageBySubject = reporter.GetStudentAverageBySubject();
+            var bestAverageBySubjects = reporter.GetBestAverageBySubjects(7.5f);
+            printBestAverages(bestAverageBySubjects);
+        }
 
-            var dictmp = engine.GetDictionaryObjects();
-
-            engine.PrintDictionary(dictmp, printStuTes: true);
+        private static void printBestAverages(List<BestAverageBySubject> bestAverageBySubjects)
+        {
+            Printer.WriteTitle("MEJORES PROMEDIOS");
+            foreach (var subject in bestAverageBySubjects)
+            {
+                Printer.DrawLine(5);
+                Printer.WriteTitle(subject.Subject);
+                foreach (var dictStudent in subject.BestAverage)
+                {
+                    foreach (var student in dictStudent)
+                    {
+                        WriteLine($"Estudiante: {student.Key}, Nota: {student.Value}");
+                    }
+                }
+            }
         }
 
         private static void EventAction(object sender, EventArgs e)

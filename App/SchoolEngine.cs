@@ -18,9 +18,8 @@ namespace CoreSchool.App
                                     country: "Ecuador", city: "Quito");
             LoadCourses();
             LoadSubjects();
-            GenerateRandomStudents(50);
+            // GenerateRandomStudents(50);
             LoadStudentTests(5);
-
         }
 
         public void PrintDictionary(
@@ -67,7 +66,7 @@ namespace CoreSchool.App
         {
             var myDictionary = new Dictionary<KeyDictionary, IEnumerable<BaseSchoolObject>>();
 
-            myDictionary.Add(KeyDictionary.Escuela, new[] { School });
+            // myDictionary.Add(KeyDictionary.Escuela, new[] { School });
             myDictionary.Add(KeyDictionary.Curso, School.Courses);
 
             var temporalStudentTest = new List<StudentTest>();
